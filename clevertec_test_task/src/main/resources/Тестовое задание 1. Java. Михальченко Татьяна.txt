@@ -1,0 +1,33 @@
+ public boolean isValid(String cardNumber) {
+        boolean isValid = false;
+
+        String withoutSpaces = "";
+        for (int i = 0; i < cardNumber.length(); i++) { // deleting a space
+            if (cardNumber.charAt(i) != ' ') {
+                withoutSpaces += cardNumber.charAt(i);
+            }
+        }
+        char[] charArray = withoutSpaces.toCharArray();
+        int[] arrInt = new int[charArray.length];
+        int sum = 0;
+        for (int i = charArray.length - 1; i >= 0 && charArray.length == 16; i--) {// charArray.length == 16
+            // since the standard card number consists of 16 digits
+            if (withoutSpaces.matches("[0-9]+")) {// checking that there are only numbers in the card number
+                arrInt[i] = Character.getNumericValue(charArray[i]);
+                if (i % 2 == 0) { //the numbers standing in even places are multiplied by 2
+                    arrInt[i] *= 2;
+                    if (arrInt[i] > 9) {// if the number is greater than 9,
+                        // then it is replaced by the sum of the digits of the resulting product
+                        arrInt[i] = arrInt[i] / 10 + arrInt[i] % 10;
+                    }
+
+                }
+
+                sum += arrInt[i];// all the received figures are added together
+                if (sum % 10 == 0) { // checking the received amount for a multiple of 10, checking for validity
+                    isValid = true;
+                }
+            }
+        }
+        return isValid;
+    }
